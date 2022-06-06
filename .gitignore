@@ -1,0 +1,5 @@
+.env
+.env.me
+.env.project
+.idea
+node_modules

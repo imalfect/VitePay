@@ -1,0 +1,29 @@
+{
+  "type": "module",
+  "name": "vitepay",
+  "version": "0.1.0",
+  "description": "VitePay is a payment system for the Vite network.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imalfect/VitePay.git"
+  },
+  "keywords": [
+    "vite"
+  ],
+  "author": "iMalFect",
+  "license": "CC-BY-4.0",
+  "bugs": {
+    "url": "https://github.com/imalfect/VitePay/issues"
+  },
+  "homepage": "https://github.com/imalfect/VitePay#readme",
+  "dependencies": {
+    "@vite/vitejs": "^2.3.18",
+    "@vite/vitejs-http": "^2.3.18",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1"
+  }
+}
