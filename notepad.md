@@ -1,0 +1,1 @@
+check for api key length if its proper in index.js at the start

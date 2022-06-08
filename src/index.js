@@ -2,11 +2,19 @@
 
 // Imports
 import express from 'express'
+import bodyParser from "body-parser";
 import ViteJS from '@vite/vitejs'
 import ViteJSHTTP from '@vite/vitejs-http'
 import mysql2 from 'mysql2/promise'
 import { readdirSync } from 'fs'
 import dotenv from 'dotenv'
+
+const WS_service = new ViteJSHTTP.HTTP_RPC(process.env.NODE_URL);
+export const provider = new ViteJS.ViteAPI(WS_service, () => {
+    console.log("Connected");
+});
+
+
 export const app = express()
 
 export const router = express.Router()
@@ -18,7 +26,8 @@ app.listen(process.env.SERVER_PORT, async function() {
 })
 // Static views
 app.use(express.static("./public"))
-
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 // Load routers
 readdirSync("./src/routers")
     .filter(file => file.endsWith(".js"))
