@@ -1,7 +1,7 @@
 import * as server from '../index.js'
 import {connPool} from '../index.js'
 import dotenv from 'dotenv'
-import {doesNameExist,createMerchant} from "../dbTools/merchantInfo.js";
+import {doesNameExist,createMerchant} from "../dbTools/merchantTools.js";
 
 dotenv.config()
 // Returning {code:x,key:y}:
