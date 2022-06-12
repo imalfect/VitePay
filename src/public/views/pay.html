@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VitePay Transaction</title>
+    <link rel="stylesheet" href="../css/paystyle.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&display=swap" rel="stylesheet">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+    <div class="loadDiv" style="visibility: collapse"><h1 class="loadingText">Loading..</h1></div>
+    <div class="failDiv" style="visibility: collapse; text-align: center;">
+        <img src="../img/fail.png" alt="">
+        <br>
+        <h1 class="failHeader" id="errorDescription">There was an issue.</h1>
+        <h3 class="failDescription">blah blah blah</h3>
+    </div>
+    <div class="mainDiv" style="visibility: visible; text-align:center">
+        <h1>Transaction #<span id="transactionID">hello</span></h1>
+        <h2>iMal Industries Co. <img src="../img/verified.png" style="visibility: visible;height: 20px"> </h2>
+        <hr>
+        <h2 style="font-size: 1.7rem">14:53</h2>
+        <img src="https://www.qr-online.pl/bin/qr/4c290663d2c2c80ae2578c82ddaaa3bb.png" alt="">
+        <h2>Send the indicated amount to the address shown below.</h2>
+        <br>
+        <div class="input-group">
+            <div class="input-group-text" id="btnGroupAddonsd"><img src="../img/memo.png" alt="" style="width: 1.4rem"></div>
+            <input type="text" class="form-control" placeholder="2786267" aria-label="2786267" aria-describedby="btnGroupAddon">
+        </div>
+        <br>
+        <div class="input-group">
+            <div class="input-group-text" id="memo"><img src="../img/price.png" alt="" style="width: 1.4rem"></div>
+            <input type="text" class="form-control" placeholder="29279" aria-label="Input group example" aria-describedby="btnGroupAddon">
+            <div class="input-group-text" >VITE</div>
+        </div>
+        <br>
+        <div class="input-group">
+            <div class="input-group-text" id="btnGroupAddon"><img src="../img/wallet.png" alt="" style="width: 1.4rem"></div>
+            <input type="text" class="form-control" placeholder="vite_jfdssjhhfue" aria-label="Input group example" aria-describedby="btnGroupAddon">
+
+        </div>
+    </div>
+</body>
+</html>

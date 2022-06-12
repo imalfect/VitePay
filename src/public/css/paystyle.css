@@ -1,0 +1,36 @@
+.mainDiv {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.loadDiv {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.failDiv {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+
+
+.failHeader {
+    color: #ff525c;
+}
+
+
+h1,h2,h3,h4,p {font-family: Inter, 'sans-serif';}
+
+.transactionID {
+    color: #1f1f1f;
+}

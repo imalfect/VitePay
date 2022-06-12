@@ -45,3 +45,32 @@ export async function createMerchant(name) {
     }
 
 }
+
+
+export async function getMerchantInfo(key) {
+    /*
+Returns:
+{code:x,name:y,verified:bool}
+1 - Success
+400 - SQL Error
+500 - No merchant found
+
+*/
+try {
+    const connection = await connPool.getConnection()
+
+    const [rows] = await connection.execute(`SELECT * FROM merchants WHERE apikey = '${encodeURIComponent(key)}'`)
+    connection.destroy()
+
+    if (!rows.length > 0) {
+        throw 500;
+    } else {
+        return {code:1,name:rows[0].name,verified:rows[0].verified}
+    }
+} catch (e) {
+    console.log(e)
+    throw 500;
+}
+
+
+}

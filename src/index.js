@@ -8,11 +8,19 @@ import ViteJSHTTP from '@vite/vitejs-http'
 import mysql2 from 'mysql2/promise'
 import { readdirSync } from 'fs'
 import dotenv from 'dotenv'
+import {expirationListener} from "./listeners/expirationListener.js";
+import {transactionListener} from "./listeners/transactionListener.js";
 
 const WS_service = new ViteJSHTTP.HTTP_RPC(process.env.NODE_URL);
 export const provider = new ViteJS.ViteAPI(WS_service, () => {
     console.log("Connected");
 });
+
+
+// Run Listeners
+
+expirationListener()
+transactionListener()
 
 
 export const app = express()
@@ -35,8 +43,10 @@ readdirSync("./src/routers")
         await import(`./routers/${file}`)
         console.log(`Setup: Router ${file} loaded`)
     })
-
+app.use(express.static('./src/public'))
+app.use(express.static('./src/public/views'))
 app.use('/',router)
+
 
 // MySQL Connection Pool Setup
 export const connPool = mysql2.createPool({
