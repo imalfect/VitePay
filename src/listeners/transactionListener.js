@@ -47,7 +47,7 @@ export async function transactionListener() {
 
                     const response = await sendToDestination(transaction.txHash,transaction.txAmount,transaction.txToken,transaction.txDestination,transaction.txID,derived)
                     if (response === 1) {
-                        await connection.execute(`INSERT INTO expiredTransactions (merchantName,txDescription,txToken,txAmount,mmSeed,mmAddress,txMemo,txID,txDestination,txStatus) VALUES ("${transaction.merchantName}","${transaction.txDescription}","${transaction.txToken}","${transaction.txAmount}","${transaction.mmSeed}","${transaction.mmAddress}","${transaction.txMemo}","${transaction.txID}","${transaction.txDestination}","1")`)
+                        await connection.execute(`INSERT INTO expiredTransactions (merchantName,txDescription,txToken,txAmount,mmSeed,mmAddress,txMemo,txID,txDestination,txStatus) VALUES ("${transaction.merchantName}","${transaction.txDescription}","${transaction.txToken}","${transaction.txAmount}","${transaction.mmSeed}","${transaction.mmAddress}","${transaction.txMemo}","${transaction.txID}","${transaction.txDestination}","3")`)
                         await connection.execute(`DELETE FROM transactions WHERE txID = '${transaction.txID}'`)
                         connection.destroy()
                         console.log(`Transaction ${transaction.txID} expired and is now deleted.`)

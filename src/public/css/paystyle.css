@@ -1,11 +1,19 @@
 .mainDiv {
+    background-color: #b2b2b2;
+    border-style: solid;
+    border-top-width: 5rem;
+    border-left-width: 5rem;
+    border-right-width: 5rem;
+    border-bottom-width: 2rem;
+    border-radius: 10px;
+    border-color: #b2b2b2;
     position: absolute;
     left: 50%;
     top: 50%;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
-
+input[type="text"]:disabled{background-color: #ffffff}
 .loadDiv {
     position: absolute;
     left: 50%;
@@ -28,6 +36,9 @@
     color: #ff525c;
 }
 
+.successHeader {
+    color: #2efc73;
+}
 
 h1,h2,h3,h4,p {font-family: Inter, 'sans-serif';}
 
