@@ -4,7 +4,7 @@ import moment from 'moment'
 
 export async function expirationListener() {
     setInterval(async function() {
-        console.log("expirationListener: Looking for expired transactions")
+        //console.log("expirationListener: Looking for expired transactions")
         try {
 
             const connection = await connPool.getConnection(function(){
@@ -15,7 +15,7 @@ export async function expirationListener() {
 
             for (const transaction of txList[0]) {
                 // Loop through each transaction
-                if (parseInt(transaction.txDeadline) < currentTime) {
+                if (transaction.txDeadline !== 'never' && parseInt(transaction.txDeadline) < currentTime) {
                     // Delete and insert into expired.
                     await connection.execute(`INSERT INTO expiredTransactions (merchantName,txDescription,txToken,txAmount,mmSeed,mmAddress,txMemo,txID,txDestination,txStatus) VALUES ("${transaction.merchantName}","${transaction.txDescription}","${transaction.txToken}","${transaction.txAmount}","${transaction.mmSeed}","${transaction.mmAddress}","${transaction.txMemo}","${transaction.txID}","${transaction.txDestination}","2")`)
                     await connection.execute(`DELETE FROM transactions WHERE txID = '${transaction.txID}'`)

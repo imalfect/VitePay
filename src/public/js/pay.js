@@ -1,5 +1,5 @@
 const URL = 'https://localhost:8080/'
-
+let x;
 let checkinterval;
 let started = false;
 /*
@@ -43,7 +43,7 @@ function setDiv(num) {
 function countdown(unixTimestamp) {
     started = true
     let countDownDate = new Date(unixTimestamp * 1000).getTime();
-    let x = setInterval(async function() {
+    x = setInterval(async function() {
 
         // Get today's date and time
         let now = new Date().getTime();
@@ -85,11 +85,16 @@ async function fetchTransaction() {
         // Success (load)
         if (transaction.txCode === 1) {
             // Still alive
+            if (transaction.expirationTime === 'never') {
+                // Never
+                clearInterval(x)
+                document.getElementById("timeLeftParent").innerHTML = 'Waiting for confirmations..'
+            }
             if (started === false) {
                 countdown(parseInt(transaction.expirationTime))
             }
             // Get QR
-            const qrurl = await fetch('https://chart.googleapis.com/chart', {
+          /*  const qrurl = await fetch('https://chart.googleapis.com/chart', {
                 method: 'POST',
                 headers:{
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -107,20 +112,55 @@ async function fetchTransaction() {
                 let  base64data = reader.result;
                 const qr = document.getElementById('payQR')
                 qr.src = base64data
-            }
+            }*/
+            const image = '../img/logo_circle_cut.svg';
+            const element = document.getElementById("qrcanvas"); //Element must be an instance of HTMLCanvasElement or HTMLDivElement
+            const qrCode = new QrCode.qrcode(element);
+            const qrCodeSetting = {
+                size: 1500,
+                ecLevel: QrCode.ecLevel.QUARTILE,
+                minVersion: 10,
+                //background: '#007bfe',
+                background:'#fff',
+                fill:'#007bfe',
+                //fill:'#000',
+                mode: QrCode.modes.DRAW_WITH_IMAGE_BOX,
+                radius: 0,
+                quiet:2,
+                image: image,
+                mSize:0.20 ,
+            };
+            let qrCodeImageUrl = null;
 
+            qrCode.generate(`vite:${transaction.mmAddress}?amount=${transaction.amount / Math.pow(10,transaction.tokenDecimals)}&data=${window.btoa(transaction.memo)}&tti=${transaction.tokenId}`, qrCodeSetting)
+                .then(() => {
+                    qrCodeImageUrl = qrCode.getImage();
+                    document.getElementById('payQR').src = qrCode.getImage()
+                });
+
+            if (transaction.confirmations !== undefined) {
+                const confirmations = document.getElementById('txConfirmations')
+                confirmations.parentElement.style.display = 'block'
+                confirmations.innerHTML = transaction.confirmations
+            }
             const memo = document.getElementById('txMemo')
             const amount = document.getElementById('txAmount')
             const address = document.getElementById('txAddress')
             const txid = document.getElementById('transactionID')
+            const verifiedMark = document.getElementById('verifiedMark')
             const txtoken = document.getElementById('txToken')
-
+            const description = document.getElementById('txDescription')
             memo.value = transaction.memo
             amount.value = transaction.amount / Math.pow(10,transaction.tokenDecimals)
             address.value = transaction.mmAddress
-            txid.value = transactionID
+            txid.innerHTML = transactionID
             txtoken.innerHTML = transaction.tokenSymbol
+            description.innerHTML = decodeURIComponent(transaction.description)
 
+
+            if (transaction.merchantVerified === 'true') {
+                verifiedMark.style.display = 'block'
+            }
             if (checkinterval === undefined) {
                 checkinterval = setInterval(async function() {
                     await fetchTransaction()
@@ -132,16 +172,21 @@ async function fetchTransaction() {
         } else if (transaction.txCode === 2) {
             // expired
             if (checkinterval !== undefined) {
-                checkinterval.clearInterval()
+                const confirmations = document.getElementById('txConfirmations')
+                confirmations.parentElement.style.display = 'block'
+                clearInterval(checkinterval)
             }
 
             const label = document.getElementById('failDescription')
             label.innerHTML = 'This transaction has expired!'
             setDiv(2)
         } else if (transaction.txCode === 3) {
-            if (checkinterval !== undefined) {
-                checkinterval.clearInterval()
-            }
+                const redirectMerchant = document.getElementById('redirectMerchant')
+                redirectMerchant.href = decodeURIComponent(transaction.redirectURL)
+                const confirmations = document.getElementById('txConfirmations')
+                confirmations.parentElement.style.display = 'block'
+                clearInterval(checkinterval)
+
             setDiv(4)
         }
 

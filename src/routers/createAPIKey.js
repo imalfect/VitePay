@@ -16,12 +16,13 @@ dotenv.config()
 
 export default server.router.post("/api/createMerchant", async function (req,res) {
     try {
-        const inputData = req.body
-        const doesMerchantExist = await doesNameExist(req.body.name)
+        console.log(req.body)
+        const name = encodeURIComponent(req.body.name)
+        const doesMerchantExist = await doesNameExist(name)
 
         if (doesMerchantExist === false) {
             // Continue
-                res.json(await createMerchant(req.body.name))
+                res.json(await createMerchant(name))
         } else {
             // Name already exists
                 res.json({code:2,key:undefined})

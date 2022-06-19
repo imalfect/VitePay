@@ -12,7 +12,7 @@ txID => Unique ID for each transaction.
 
 txDestination => vite_ address the mmAddress should send the funds to.
 
-txStatus => 1 => Transaction was successful | 2 => Transaction expired | 3 => Transaction cancelled | 4 => Transaction manually cancelled (by the database admin) (most likely won't use it)
+txStatus => 3 => Transaction was successful | 2 => Transaction expired |  4 => Transaction manually cancelled (by the database admin) (most likely won't use it)
 
 #### mmSeed => Encrypted seed of the "middleman" wallet used for this transaction.
 #### mmAddress => Wallet address of the "middleman" wallet.

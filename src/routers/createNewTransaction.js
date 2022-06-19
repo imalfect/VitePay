@@ -5,13 +5,18 @@ import {doesNameExist, createMerchant, getMerchantInfo} from "../dbTools/merchan
 import {createNewTransaction} from "../dbTools/createTransaction.js";
 
 dotenv.config()
-// Returning {code:x,key:y}:
+
 /*
-    Codes:
-        1 - Success
-        2 - Name already taken
-        400 - SQL Error
-        502 - Other Issue
+Returns {code:x,id:y,expires:z}
+   Codes:
+    1 => Success
+    2 => memoPrefix too long (if any) max. 8 chars
+    3 => Incorrect tokenId
+    4 => Incorrect Destination Address
+    5 => Amount NaN
+    6 => Description too long (max. 75 chars)
+    7 => Redirect URL invalid.
+   500 = > SQL Error
 */
 
 
@@ -22,13 +27,16 @@ export default server.router.post("/api/createTransaction", async function (req,
 
         if (merchantInfo.code === 1) {
             // Continue
-            const x = await createNewTransaction(merchantInfo.name,req.body.description,req.body.tokenid,req.body.amount,req.body.memoprefix,req.body.destination,merchantInfo.verified)
+            const x = await createNewTransaction(merchantInfo.name,req.body.description,req.body.tokenid,req.body.amount,req.body.memoprefix,req.body.destination,merchantInfo.verified,req.body.redirecturl)
             res.json(x)
         } else {
             // Name already exists
             res.json({code:2,key:undefined})
         }
     } catch (e) {
+        if (e.code !== 500) {
+
+        }
         console.log(e)
         res.json({code:e,key:undefined})
     }

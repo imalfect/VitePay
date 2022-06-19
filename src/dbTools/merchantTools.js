@@ -32,7 +32,7 @@ export async function createMerchant(name) {
 
         const apiKey = randomstring.generate(parseInt(process.env.APIKEY_LENGTH))
 
-        await connection.execute(`INSERT INTO merchants (name, apikey,verified) VALUES ('${encodeURIComponent(name)}', '${apiKey}', 'false')`)
+        await connection.execute(`INSERT INTO merchants (name, apikey,verified) VALUES ('${name}', '${apiKey}', 'false')`)
 
         connection.destroy()
 

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VitePay - Home</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/paystyle.css">
+    <script src="../js/registerMerchant.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body style="background-color: #1f1f1f">
+<header class="d-flex flex-wrap justify-content-center py-3 mb-4 " style="background-color: #007aff">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <img src="../img/logo_circle.svg" style="width: 40px;margin-right: 10px" alt="">
+        <span class="fs-3" style="color: white">Vite<b>Pay</b></span>
+    </a>
+
+    <ul class="nav nav-pills">
+        <li class="nav-item"><a href="/index.html" class="nav-link text-white" aria-current="page">Home</a></li>
+        <li class="nav-item"><a href="/docs.html" class="nav-link text-white">Docs</a></li>
+        <li class="nav-item"><a href="/faq.html" class="nav-link text-white">FAQ</a></li>
+        <li class="nav-item"><a href="/register.html" class="nav-link bg-light">Register</a></li>
+    </ul>
+</header>
+
+
+<div class="mainPage">
+    <h1 class="registerTitle">Register as a <img src="../img/logo_blue.svg" alt="" style="height: 6rem"> merchant</h1>
+
+        <p class="registerDescription">You get:</p>
+        <ul class="perksList">
+            <li>Always <span style="color: #2efc73">free</span> transaction API</li>
+            <li><span style="color: #007aff">Reliable</span> and <span style="color: deeppink">secure</span> payment system</li>
+        </ul>
+
+    <hr class="registerDivider">
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default">Merchant Name</span>
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="merchantName">
+    </div>
+    <div class="g-recaptcha captcha" data-sitekey="6LdghsscAAAAAIsREpyvw5e9TWd48wF-72hEP1mS"></div>
+    <button class="btn btn-primary" style="height: 4rem;width: 8rem;margin-top:2rem" onclick="createMerchant()">Register</button>
+</div>
+
+</body>
+</html>

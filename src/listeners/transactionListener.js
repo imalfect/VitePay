@@ -34,7 +34,7 @@ export async function transactionListener() {
                 ).catch((e) => {
 
                 })
-                if (block.confirmations > 15) {
+                if (block.confirmations > 60) {
                     const depositMnemo = aes256.decrypt(process.env.ENCRYPT_KEY,transaction.mmSeed)
                     // Receive
 
@@ -47,7 +47,7 @@ export async function transactionListener() {
 
                     const response = await sendToDestination(transaction.txHash,transaction.txAmount,transaction.txToken,transaction.txDestination,transaction.txID,derived)
                     if (response === 1) {
-                        await connection.execute(`INSERT INTO expiredTransactions (merchantName,txDescription,txToken,txAmount,mmSeed,mmAddress,txMemo,txID,txDestination,txStatus) VALUES ("${transaction.merchantName}","${transaction.txDescription}","${transaction.txToken}","${transaction.txAmount}","${transaction.mmSeed}","${transaction.mmAddress}","${transaction.txMemo}","${transaction.txID}","${transaction.txDestination}","3")`)
+                        await connection.execute(`INSERT INTO expiredTransactions (merchantName,txDescription,txToken,txAmount,mmSeed,mmAddress,txMemo,txID,txDestination,txStatus,redirectURL) VALUES ("${transaction.merchantName}","${transaction.txDescription}","${transaction.txToken}","${transaction.txAmount}","${transaction.mmSeed}","${transaction.mmAddress}","${transaction.txMemo}","${transaction.txID}","${transaction.txDestination}","3","${transaction.redirectURL}")`)
                         await connection.execute(`DELETE FROM transactions WHERE txID = '${transaction.txID}'`)
                         connection.destroy()
                         console.log(`Transaction ${transaction.txID} expired and is now deleted.`)
@@ -104,7 +104,7 @@ export async function transactionListener() {
                         console.log("wtf somehow it works but how i have no idea lmaoooo")
                         // Update
                         if (transaction.txHash === null) {
-                            await connection.execute(`UPDATE transactions SET txHash = '${deposit.hash}', txDeadline = '999999999999' WHERE txID = '${transaction.txID}'`)
+                            await connection.execute(`UPDATE transactions SET txHash = '${deposit.hash}', txDeadline = 'never' WHERE txID = '${transaction.txID}'`)
 
                         } else {
                             console.log(depositAmount)

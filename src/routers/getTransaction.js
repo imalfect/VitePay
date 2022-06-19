@@ -2,6 +2,7 @@ import {connPool} from "../index.js";
 
 import * as server from '../index.js'
 import {provider} from "../../vitelab.js";
+import {getTransactionConfirmations} from "../txUtils/getHashConfirmations.js";
 // Returning {code:x,memo:y,mmAddress:z,amount:a,tokenId:b,txCode:c,expirationTime:d}:
 /*
     Codes:
@@ -26,7 +27,13 @@ export default server.router.post("/api/getTransaction", async function (req,res
                 'mintage_getTokenInfoById',
                 transaction[0][0].txToken
             )
-            res.json({code:1,memo:transaction[0][0].txMemo,mmAddress:transaction[0][0].mmAddress,amount:transaction[0][0].txAmount,tokenId:transaction[0][0].txToken,txCode:1,expirationTime:transaction[0][0].txDeadline,tokenSymbol:token.tokenSymbol,tokenDecimals:token.decimals})
+            console.log(transaction[0][0].txHash)
+            if (transaction[0][0].txHash !== null) {
+                const txConfirmations = await getTransactionConfirmations(transaction[0][0].txHash)
+                res.json({code:1,memo:transaction[0][0].txMemo,mmAddress:transaction[0][0].mmAddress,amount:transaction[0][0].txAmount,tokenId:transaction[0][0].txToken,txCode:1,expirationTime:transaction[0][0].txDeadline,tokenSymbol:token.tokenSymbol,tokenDecimals:token.decimals,confirmations:txConfirmations,description:transaction[0][0].txDescription,merchantVerified:transaction[0][0].merchantVerified})
+                return;
+            }
+            res.json({code:1,memo:transaction[0][0].txMemo,mmAddress:transaction[0][0].mmAddress,amount:transaction[0][0].txAmount,tokenId:transaction[0][0].txToken,txCode:1,expirationTime:transaction[0][0].txDeadline,tokenSymbol:token.tokenSymbol,tokenDecimals:token.decimals,description:transaction[0][0].txDescription,merchantVerified:transaction[0][0].merchantVerified})
         } else {
             const expiredTransaction = await connection.execute(`SELECT * FROM expiredTransactions WHERE txID = '${encodeURIComponent(req.body.txID)}'`)
 
@@ -34,8 +41,12 @@ export default server.router.post("/api/getTransaction", async function (req,res
 
                 // Transaction expired/completed
                 connection.destroy()
+                if (parseInt(expiredTransaction[0][0].txStatus) === 3) {
+                    res.json({code:1,txCode:parseInt(expiredTransaction[0][0].txStatus),redirectURL:expiredTransaction[0][0].redirectURL})
+                } else {
+                    res.json({code:1,txCode:parseInt(expiredTransaction[0][0].txStatus)})
+                }
 
-                res.json({code:1,txCode:parseInt(expiredTransaction[0][0].txStatus)})
             } else {
 
                 // No ID found
@@ -46,7 +57,7 @@ export default server.router.post("/api/getTransaction", async function (req,res
             }
         }
     } catch (e) {
-        res.json({code:502})
+        res.json(e)
     }
 
 })
