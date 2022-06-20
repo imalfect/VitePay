@@ -160,7 +160,7 @@ async function fetchTransaction() {
 
 
             if (transaction.merchantVerified === 'true') {
-                verifiedMark.style.display = 'block'
+                verifiedMark.style.display = 'inline'
             }
             if (checkinterval === undefined) {
                 checkinterval = setInterval(async function() {
