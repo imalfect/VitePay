@@ -131,7 +131,7 @@ async function fetchTransaction() {
             };
             let qrCodeImageUrl = null;
 
-            qrCode.generate(`vite:${transaction.mmAddress}?amount=${transaction.amount / Math.pow(10,transaction.tokenDecimals)}&data=${window.btoa(transaction.memo)}&tti=${transaction.tokenId}`, qrCodeSetting)
+            qrCode.generate(`vite:${transaction.mmAddress}/?amount=${transaction.amount / Math.pow(10,transaction.tokenDecimals)}&data=${window.btoa(transaction.memo)}&tti=${transaction.tokenId}`, qrCodeSetting)
                 .then(() => {
                     qrCodeImageUrl = qrCode.getImage();
                     document.getElementById('payQR').src = qrCode.getImage()
