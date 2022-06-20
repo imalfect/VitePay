@@ -1,3 +1,5 @@
+
+!!! This project can be used for commercial uses and edits if the author of it allows to do so,
 Creative Commons Attribution-NoDerivatives 4.0 International
 
 Creative Commons Corporation ("Creative Commons") is not a law firm and
