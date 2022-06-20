@@ -153,7 +153,6 @@ async function fetchTransaction() {
             memo.value = transaction.memo
             amount.value = transaction.amount / Math.pow(10,transaction.tokenDecimals)
             address.value = transaction.mmAddress
-            alert(transaction.merchantName)
             merchantName.innerHTML = decodeURIComponent(transaction.merchantName)
             txid.innerHTML = transactionID
             txtoken.innerHTML = transaction.tokenSymbol
