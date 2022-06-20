@@ -124,10 +124,9 @@ async function fetchTransaction() {
                 background:'#fff',
                 fill:'#007bfe',
                 //fill:'#000',
-                mode: QrCode.modes.DRAW_WITH_IMAGE_BOX,
+                mode: QrCode.modes.NORMAL,
                 radius: 0,
                 quiet:2,
-                image: image,
                 mSize:0.20 ,
             };
             let qrCodeImageUrl = null;
@@ -148,11 +147,13 @@ async function fetchTransaction() {
             const address = document.getElementById('txAddress')
             const txid = document.getElementById('transactionID')
             const verifiedMark = document.getElementById('verifiedMark')
+            const merchantName = document.getElementById('merchantName')
             const txtoken = document.getElementById('txToken')
             const description = document.getElementById('txDescription')
             memo.value = transaction.memo
             amount.value = transaction.amount / Math.pow(10,transaction.tokenDecimals)
             address.value = transaction.mmAddress
+            merchantName.innerHTML = decodeURIComponent(transaction.merchantName)
             txid.innerHTML = transactionID
             txtoken.innerHTML = transaction.tokenSymbol
             description.innerHTML = decodeURIComponent(transaction.description)

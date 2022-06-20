@@ -3,3 +3,7 @@
 .env.project
 .idea
 node_modules
+
+.env*
+!.env.project
+.env.project
