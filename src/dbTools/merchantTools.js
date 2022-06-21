@@ -38,13 +38,13 @@ export async function createMerchant(name) {
     try {
         const connection = await connPool.getConnection()
 
-        const apiKey = aes256.encrypt(process.env.ENCRYPT_KEY,randomstring.generate(parseInt(process.env.APIKEY_LENGTH)))
+        const apiKey = randomstring.generate(parseInt(process.env.APIKEY_LENGTH))
 
         await connection.execute(`INSERT INTO merchants (name, apikey,verified) VALUES ("${name}", "${apiKey}", "false")`)
 
         connection.destroy()
 
-        return {code:1,key:aes256.decrypt(process.env.ENCRYPT_KEY,apiKey)}
+        return {code:1,key:apiKey}
 
 
     } catch (e) {
@@ -71,8 +71,8 @@ Returns:
 */
 try {
     const connection = await connPool.getConnection()
-    console.log(aes256.encrypt(process.env.ENCRYPT_KEY,key))
-    const [rows] = await connection.execute(`SELECT * FROM merchants WHERE apikey = '${aes256.encrypt(process.env.ENCRYPT_KEY,key)}'`)
+
+    const [rows] = await connection.execute(`SELECT * FROM merchants WHERE apikey = '${encodeURIComponent(key)}'`)
     connection.destroy()
 
     if (!rows.length > 0) {
