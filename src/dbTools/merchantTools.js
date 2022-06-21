@@ -40,8 +40,8 @@ export async function createMerchant(name) {
         const connection = await connPool.getConnection()
 
         const apiKey = randomstring.generate(parseInt(process.env.APIKEY_LENGTH))
-
-        await connection.execute(`INSERT INTO merchants (name, apikey,verified) VALUES ("${name}", "${await sha256(apiKey)}", "false")`)
+        const shaKey = await sha256(apiKey)
+        await connection.execute(`INSERT INTO merchants (name, apikey,verified) VALUES ("${name}", "${shaKey}", "false")`)
 
         connection.destroy()
 
