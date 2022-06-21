@@ -28,6 +28,7 @@ export default server.router.post("/api/createMerchant", async function (req,res
                 res.json({code:2,key:undefined})
         }
     } catch (e) {
+        console.log(e)
         res.json({code:e,key:undefined})
     }
 
