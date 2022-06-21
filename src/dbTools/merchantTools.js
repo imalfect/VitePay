@@ -41,6 +41,7 @@ export async function createMerchant(name) {
 
         const apiKey = randomstring.generate(parseInt(process.env.APIKEY_LENGTH))
         const shaKey = await sha256(apiKey)
+        console.log(shaKey)
         await connection.execute(`INSERT INTO merchants (name, apikey,verified) VALUES ("${name}", "${shaKey}", "false")`)
 
         connection.destroy()
