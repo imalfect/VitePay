@@ -98,7 +98,7 @@ export async function createNewTransaction(merchantName,description,tokenId,amou
 
         await connection.execute(`INSERT INTO transactions (merchantName,txDescription,txToken,txAmount,mmSeed,mmAddress,txMemo,txDeadline,txID,txDestination,merchantVerified,redirectURL) VALUES ('${merchantName}', '${encodeURIComponent(description)}', '${tokenId}', '${amount}','${mmMnemonics}','${mmAddress}','${txMemo}', '${expirationTime}', '${txId}', '${txDestination}', '${merchantVerified}','${redirectURL}')`)
 
-        return {code:1,id:txId,expires:expirationTime}
+        return {code:1,id:txId,expires:expirationTime,url:`${process.env.WEB_URL}/pay/${txId}`}
     } catch (e) {
         if (e.code.errno !== undefined) {
             // sql error
