@@ -100,7 +100,12 @@ export async function createNewTransaction(merchantName,description,tokenId,amou
 
         return {code:1,id:txId,expires:expirationTime}
     } catch (e) {
-        throw e;
+        if (e.code.errno !== undefined) {
+            // sql error
+            throw {code:500}
+        } else {
+            throw e;
+        }
     }
 
 }

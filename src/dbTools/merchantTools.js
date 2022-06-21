@@ -11,8 +11,12 @@ export async function doesNameExist(name) {
 
         return rows.length > 0;
     } catch (e) {
-        console.warn(e)
-        throw Error('400');
+        if (e.code.errno !== undefined) {
+            // sql error
+            throw {code:500}
+        } else {
+            throw e;
+        }
     }
 }
 
@@ -23,7 +27,7 @@ export async function createMerchant(name) {
     Returns:
     {code:x,key:x}
     1 - Success
-    400 - SQL Error
+    500 - SQL Error
 
 
     */
@@ -40,8 +44,12 @@ export async function createMerchant(name) {
 
 
     } catch (e) {
-        console.warn(e)
-        throw {code:400,key:null};
+        if (e.code.errno !== undefined) {
+            // sql error
+            throw {code:500}
+        } else {
+            throw e;
+        }
     }
 
 }
@@ -52,8 +60,9 @@ export async function getMerchantInfo(key) {
 Returns:
 {code:x,name:y,verified:bool}
 1 - Success
-400 - SQL Error
-500 - No merchant found
+2 - No merchant found
+500 - SQL Error
+
 
 */
 try {
@@ -63,13 +72,17 @@ try {
     connection.destroy()
 
     if (!rows.length > 0) {
-        throw 500;
+        throw {code:2};
     } else {
         return {code:1,name:rows[0].name,verified:rows[0].verified}
     }
 } catch (e) {
-    console.log(e)
-    throw 500;
+    if (e.code.errno !== undefined) {
+        // sql error
+        throw {code:500}
+    } else {
+        throw e;
+    }
 }
 
 

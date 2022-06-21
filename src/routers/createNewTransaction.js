@@ -16,6 +16,7 @@ Returns {code:x,id:y,expires:z}
     5 => Amount NaN
     6 => Description too long (max. 75 chars)
     7 => Redirect URL invalid.
+    8 => Merchant doesn't exist
    500 = > SQL Error
 */
 
@@ -29,16 +30,12 @@ export default server.router.post("/api/createTransaction", async function (req,
             // Continue
             const x = await createNewTransaction(merchantInfo.name,req.body.description,req.body.tokenid,req.body.amount,req.body.memoprefix,req.body.destination,merchantInfo.verified,req.body.redirecturl)
             res.json(x)
-        } else {
-            // Name already exists
-            res.json({code:2,key:undefined})
+        } else if (merchantInfo.code === 2) {
+            // Merchant doesn't exist
+            res.json({code:8,key:undefined})
         }
     } catch (e) {
-        if (e.code !== 500) {
-
-        }
-        console.log(e)
-        res.json({code:e,key:undefined})
+        res.json(e)
     }
 
 })

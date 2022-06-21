@@ -8,7 +8,8 @@ import {getTransactionConfirmations} from "../txUtils/getHashConfirmations.js";
     Codes:
         1 - Success
         2 - ID doesn't exist
-        400 - SQL Error
+        500 - SQL Error
+        600 - Vite Node issue
         502 - Other Issue
 */
 
@@ -57,7 +58,12 @@ export default server.router.post("/api/getTransaction", async function (req,res
             }
         }
     } catch (e) {
-        res.json(e)
+        if (e.code.errno !== undefined) {
+            // sql error
+            throw {code:500}
+        } else {
+            throw e;
+        }
     }
 
 })
