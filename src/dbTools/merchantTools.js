@@ -44,7 +44,7 @@ export async function createMerchant(name) {
 
         connection.destroy()
 
-        return {code:1,key:apiKey}
+        return {code:1,key:aes256.decrypt(process.env.ENCRYPT_KEY,apiKey)}
 
 
     } catch (e) {
