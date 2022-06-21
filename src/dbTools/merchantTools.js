@@ -81,7 +81,7 @@ try {
         return {code:1,name:rows[0].name,verified:rows[0].verified}
     }
 } catch (e) {
-    if (e.code.errno !== undefined) {
+    if (e.code === undefined || e.code.errno !== undefined) {
         // sql error
         throw {code:500}
     } else {

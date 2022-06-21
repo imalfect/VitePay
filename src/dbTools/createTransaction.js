@@ -100,7 +100,7 @@ export async function createNewTransaction(merchantName,description,tokenId,amou
 
         return {code:1,id:txId,expires:expirationTime,url:`${process.env.WEB_URL}/pay/${txId}`}
     } catch (e) {
-        if (e.code.errno !== undefined) {
+        if (e.code === undefined || e.code.errno !== undefined) {
             // sql error
             throw {code:500}
         } else {
