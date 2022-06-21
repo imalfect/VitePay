@@ -15,6 +15,7 @@ export async function doesNameExist(name) {
 
         return rows.length > 0;
     } catch (e) {
+        console.log(e)
         if (e.code.errno !== undefined) {
             // sql error
             throw {code:500}
