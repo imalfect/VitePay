@@ -58,6 +58,7 @@ export default server.router.post("/api/getTransaction", async function (req,res
             }
         }
     } catch (e) {
+        console.log(e)
         if (e.code.errno !== undefined) {
             // sql error
             throw {code:500}
