@@ -1,7 +1,7 @@
 import {connPool} from "../index.js";
-import aes256 from "aes256";
 import dotenv from 'dotenv'
 import * as randomstring from 'randomstring'
+import {sha256} from "../utils/sha256.js";
 
 dotenv.config()
 
@@ -40,7 +40,7 @@ export async function createMerchant(name) {
 
         const apiKey = randomstring.generate(parseInt(process.env.APIKEY_LENGTH))
 
-        await connection.execute(`INSERT INTO merchants (name, apikey,verified) VALUES ("${name}", "${apiKey}", "false")`)
+        await connection.execute(`INSERT INTO merchants (name, apikey,verified) VALUES ("${name}", "${await sha256(apiKey)}", "false")`)
 
         connection.destroy()
 
@@ -72,7 +72,7 @@ Returns:
 try {
     const connection = await connPool.getConnection()
 
-    const [rows] = await connection.execute(`SELECT * FROM merchants WHERE apikey = '${encodeURIComponent(key)}'`)
+    const [rows] = await connection.execute(`SELECT * FROM merchants WHERE apikey = '${await sha256(key)}'`)
     connection.destroy()
 
     if (!rows.length > 0) {
