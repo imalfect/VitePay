@@ -72,7 +72,7 @@ Returns:
 try {
     const connection = await connPool.getConnection()
 
-    const [rows] = await connection.execute(`SELECT * FROM merchants WHERE apikey = '${encodeURIComponent(aes256.decrypt(process.env.ENCRYPT_KEY,key))}'`)
+    const [rows] = await connection.execute(`SELECT * FROM merchants WHERE apikey = '${encodeURIComponent(aes256.encrypt(process.env.ENCRYPT_KEY,key))}'`)
     connection.destroy()
 
     if (!rows.length > 0) {
