@@ -7,8 +7,9 @@ export async function getTransactionConfirmations(hash) {
             "ledger_getAccountBlockByHash",
             hash
         )
+        return block.confirmations
     } catch (e) {
         throw {code:600}
     }
-    return block.confirmations
+
 }
