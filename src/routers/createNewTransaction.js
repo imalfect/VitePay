@@ -7,7 +7,7 @@ import {createNewTransaction} from "../dbTools/createTransaction.js";
 dotenv.config()
 
 /*
-Returns {code:x,id:y,expires:z}
+Returns {code:x,id:y,expires:z,url:a}
    Codes:
     1 => Success
     2 => memoPrefix too long (if any) max. 8 chars
