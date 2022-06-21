@@ -1,6 +1,10 @@
 import {connPool} from "../index.js";
+import aes256 from "aes256";
 import dotenv from 'dotenv'
 import * as randomstring from 'randomstring'
+
+dotenv.config()
+
 export async function doesNameExist(name) {
     try {
         const connection = await connPool.getConnection()
@@ -34,7 +38,7 @@ export async function createMerchant(name) {
     try {
         const connection = await connPool.getConnection()
 
-        const apiKey = randomstring.generate(parseInt(process.env.APIKEY_LENGTH))
+        const apiKey = aes256.encrypt(process.env.ENCRYPT_KEY,randomstring.generate(parseInt(process.env.APIKEY_LENGTH)))
 
         await connection.execute(`INSERT INTO merchants (name, apikey,verified) VALUES ("${name}", "${apiKey}", "false")`)
 
@@ -68,7 +72,7 @@ Returns:
 try {
     const connection = await connPool.getConnection()
 
-    const [rows] = await connection.execute(`SELECT * FROM merchants WHERE apikey = '${encodeURIComponent(key)}'`)
+    const [rows] = await connection.execute(`SELECT * FROM merchants WHERE apikey = '${encodeURIComponent(aes256.decrypt(process.env.ENCRYPT_KEY,key))}'`)
     connection.destroy()
 
     if (!rows.length > 0) {
