@@ -7,6 +7,7 @@ dotenv.config()
 
 export async function doesNameExist(name) {
     try {
+
         const connection = await connPool.getConnection()
 
         const [rows] = await connection.query(`SELECT * FROM merchants WHERE name = '${encodeURIComponent(name)}'`)
