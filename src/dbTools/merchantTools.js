@@ -71,7 +71,7 @@ Returns:
 */
 try {
     const connection = await connPool.getConnection()
-
+    console.log(aes256.encrypt(process.env.ENCRYPT_KEY,key))
     const [rows] = await connection.execute(`SELECT * FROM merchants WHERE apikey = '${aes256.encrypt(process.env.ENCRYPT_KEY,key)}'`)
     connection.destroy()
 
