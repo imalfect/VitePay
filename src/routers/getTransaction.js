@@ -22,7 +22,6 @@ export default server.router.post("/api/getTransaction", async function (req,res
         const transaction = await connection.execute(`SELECT * FROM transactions WHERE txID = '${encodeURIComponent(req.body.txID)}'`)
 
         if (transaction[0].length > 0) {
-            console.log(transaction[0][0].css)
             // Transaction still pending
             connection.destroy()
             const token = await provider.request(
