@@ -122,7 +122,7 @@ async function fetchTransaction() {
                 minVersion: 10,
                 //background: '#007bfe',
                 background:'#fff',
-                fill:'#007bfe',
+                fill:'#000000',
                 //fill:'#000',
                 mode: QrCode.modes.NORMAL,
                 radius: 0,
