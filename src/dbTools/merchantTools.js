@@ -66,7 +66,7 @@ export async function createMerchant(name) {
 export async function getMerchantInfo(key) {
     /*
 Returns:
-{code:x,name:y,verified:bool}
+{code:x,name:y,verified:bool,css:z}
 1 - Success
 2 - No merchant found
 500 - SQL Error
@@ -82,7 +82,7 @@ try {
     if (!rows.length > 0) {
         throw {code:8};
     } else {
-        return {code:1,name:rows[0].name,verified:rows[0].verified}
+        return {code:1,name:rows[0].name,verified:rows[0].verified,css:rows[0].css}
     }
 } catch (e) {
     if (e.code === undefined || e.code.errno !== undefined) {

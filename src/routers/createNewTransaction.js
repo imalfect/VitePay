@@ -28,7 +28,7 @@ export default server.router.post("/api/createTransaction", async function (req,
 
         if (merchantInfo.code === 1) {
             // Continue
-            const x = await createNewTransaction(merchantInfo.name,req.body.description,req.body.tokenid,req.body.amount,req.body.memoprefix,req.body.destination,merchantInfo.verified,req.body.redirecturl)
+            const x = await createNewTransaction(merchantInfo.name,req.body.description,req.body.tokenid,req.body.amount,req.body.memoprefix,req.body.destination,merchantInfo.verified,req.body.redirecturl,merchantInfo.css)
             res.json(x)
         } else if (merchantInfo.code === 2) {
             // Merchant doesn't exist

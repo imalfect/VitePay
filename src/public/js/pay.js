@@ -158,7 +158,9 @@ async function fetchTransaction() {
             txtoken.innerHTML = transaction.tokenSymbol
             description.innerHTML = decodeURIComponent(transaction.description)
 
-
+            if (transaction.css !== null || transaction.css !== 'null') {
+                merchantName.style = decodeURIComponent(transaction.css)
+            }
             if (transaction.merchantVerified === 'true') {
                 verifiedMark.style.display = 'inline'
             }
