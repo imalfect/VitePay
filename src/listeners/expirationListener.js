@@ -24,7 +24,7 @@ export async function expirationListener() {
 
                 }
             }
-            connection.destroy()
+            connection.release()
         } catch (e) {
             console.warn(e)
             // Add proper error handling

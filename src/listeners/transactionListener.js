@@ -5,6 +5,7 @@ import aes256 from 'aes256'
 import {decodeB64, encodeB64} from "../utils/base64.js";
 import {revertTransaction} from "../txUtils/revertTransaction.js";
 import {sendToDestination} from "../txUtils/sendToDestination.js";
+import chalk from 'chalk'
 dotenv.config()
 
 
@@ -24,7 +25,7 @@ export async function transactionListener() {
 
         const [rows] = await connection.execute(`SELECT * FROM transactions`)
 
-        console.log(`Found ${rows.length} pending transactions!`)
+        console.log(chalk.yellow(`Found ${rows.length} pending transactions!`))
 
         for (const transaction of rows) {
             if (transaction.txHash !== null) {
@@ -49,7 +50,7 @@ export async function transactionListener() {
                     if (response === 1) {
                         await connection.execute(`INSERT INTO expiredTransactions (merchantName,txDescription,txToken,txAmount,mmSeed,mmAddress,txMemo,txID,txDestination,txStatus,redirectURL) VALUES ("${transaction.merchantName}","${transaction.txDescription}","${transaction.txToken}","${transaction.txAmount}","${transaction.mmSeed}","${transaction.mmAddress}","${transaction.txMemo}","${transaction.txID}","${transaction.txDestination}","3","${transaction.redirectURL}")`)
                         await connection.execute(`DELETE FROM transactions WHERE txID = '${transaction.txID}'`)
-                        connection.destroy()
+                        connection.replace()
                         console.log(`Transaction ${transaction.txID} expired and is now deleted.`)
                     }
                 } else {
@@ -114,7 +115,7 @@ export async function transactionListener() {
                             console.log(expectedTokenId)
                             console.log(depositTokenId)
                             await revertTransaction(depositHash,depositAmount,depositTokenId,depositSource,derived)
-                            connection.destroy()
+                            connection.replace()
                             console.log("tx with correct already exists")
                         }
 
@@ -130,7 +131,7 @@ export async function transactionListener() {
                         console.log(expectedTokenId)
                         console.log(depositTokenId)
                         await revertTransaction(depositHash,depositAmount,depositTokenId,depositSource,derived)
-                        connection.destroy()
+                        connection.replace()
                         // Trigger refund or something idk
                     }
                 }
