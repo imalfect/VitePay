@@ -59,7 +59,7 @@ export const payLimiter = rateLimit({
 
 // MySQL Connection Pool Setup
 export const connPool = mysql2.createPool({
-    connectionLimit: 5,
+    connectionLimit: 15,
     host:process.env.DB_HOST,
     user: process.env.DB_USER,
     password:process.env.DB_PASS,
