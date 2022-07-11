@@ -38,14 +38,13 @@ export async function createMerchant(name) {
 
     */
     try {
-        const connection = await connPool.getConnection()
 
         const apiKey = randomstring.generate(parseInt(process.env.APIKEY_LENGTH))
         const shaKey = await sha256(apiKey)
         console.log(shaKey)
-        await connection.execute(`INSERT INTO merchants (name, apikey,verified) VALUES ("${name}", "${shaKey}", "false")`)
+        await connPool.query(`INSERT INTO merchants (name, apikey,verified) VALUES ("${name}", "${shaKey}", "false")`)
 
-        connection.release()
+
 
         return {code:1,key:apiKey}
 
@@ -74,10 +73,8 @@ Returns:
 
 */
 try {
-    const connection = await connPool.getConnection()
 
-    const [rows] = await connection.execute(`SELECT * FROM merchants WHERE apikey = '${await sha256(key)}'`)
-    connection.release()
+    const [rows] = await connPool.query(`SELECT * FROM merchants WHERE apikey = '${await sha256(key)}'`)
 
     if (!(rows.length > 0)) {
         throw {code:8};
