@@ -35,7 +35,7 @@
     "express-rate-limit": "^6.4.0",
     "fs": "^0.0.1-security",
     "i": "^0.3.7",
-    "moment": "^2.29.3",
+    "moment": "^2.29.4",
     "mysql2": "^2.3.3",
     "node-fetch": "^3.2.6",
     "npm": "^8.12.1",
