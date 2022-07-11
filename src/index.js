@@ -50,14 +50,13 @@ app.use('/',router)
 
 // Rate Limiting
 
-const payLimiter = rateLimit({
+export const payLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
     standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
     legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 })
-app.use('/api/createMerchant', payLimiter)
-app.use('/pay/*', payLimiter)
+
 // MySQL Connection Pool Setup
 export const connPool = mysql2.createPool({
     connectionLimit: 10000,
