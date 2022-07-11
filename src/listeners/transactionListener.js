@@ -2,7 +2,7 @@ import {connPool,provider} from "../index.js";
 import dotenv from "dotenv";
 import vite from '@vite/vitejs'
 import aes256 from 'aes256'
-import {decodeB64, encodeB64} from "../utils/base64.js";
+import {decodeB64,} from "../utils/base64.js";
 import {revertTransaction} from "../txUtils/revertTransaction.js";
 import {sendToDestination} from "../txUtils/sendToDestination.js";
 dotenv.config()
@@ -61,8 +61,6 @@ export async function transactionListener() {
             const expectedAmount = transaction.txAmount
             const expectedMemo = transaction.txMemo
             const expectedTokenId = transaction.txToken
-            const txDestination = transaction.txDestination
-            const txID = transaction.txID
             const unreceived = await provider.request(
                 "ledger_getUnreceivedBlocksByAddress",
                 `${transaction.mmAddress}`,

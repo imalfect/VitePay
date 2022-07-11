@@ -79,7 +79,7 @@ try {
     const [rows] = await connection.execute(`SELECT * FROM merchants WHERE apikey = '${await sha256(key)}'`)
     connection.destroy()
 
-    if (!rows.length > 0) {
+    if (!(rows.length > 0)) {
         throw {code:8};
     } else {
         return {code:1,name:rows[0].name,verified:rows[0].verified,css:rows[0].css}

@@ -1,4 +1,3 @@
-const URL = 'https://localhost:8080/'
 let x;
 let checkinterval;
 let started = false;
@@ -52,8 +51,6 @@ function countdown(unixTimestamp) {
         let distance = countDownDate - now;
 
         // Time calculations for days, hours, minutes and seconds
-        let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
@@ -69,7 +66,7 @@ function countdown(unixTimestamp) {
 
 async function fetchTransaction() {
     let parts = window.location.href.split('/');
-    const transactionID = parts.pop()
+    const transactionID = encodeURIComponent(parts.pop())
 
     const transaction = await fetch(`${window.origin}/api/getTransaction`, {
         method:'POST',
@@ -113,7 +110,6 @@ async function fetchTransaction() {
                 const qr = document.getElementById('payQR')
                 qr.src = base64data
             }*/
-            const image = '../img/logo_circle_cut.svg';
             const element = document.getElementById("qrcanvas"); //Element must be an instance of HTMLCanvasElement or HTMLDivElement
             const qrCode = new QrCode.qrcode(element);
             const qrCodeSetting = {

@@ -23,7 +23,7 @@ async function sendAccountBlock(accountBlock,privateKey) {
             accountBlock.setProvider(provider).setPrivateKey(privateKey);
             await accountBlock.autoSetPreviousAccountBlock();
             await accountBlock.PoW();
-            const result = await accountBlock.sign().send().catch((e) => {
+            await accountBlock.sign().send().catch((e) => {
                 console.warn(e)
             })
             return 1;

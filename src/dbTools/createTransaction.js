@@ -2,7 +2,6 @@ import {connPool} from "../index.js";
 import dotenv from 'dotenv'
 import * as randomstring from 'randomstring'
 import moment from "moment";
-import {provider} from "../index.js";
 import aes256 from 'aes256'
 import vite from "@vite/vitejs"
 dotenv.config()

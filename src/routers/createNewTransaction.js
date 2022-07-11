@@ -1,7 +1,6 @@
 import * as server from '../index.js'
-import {connPool} from '../index.js'
 import dotenv from 'dotenv'
-import {doesNameExist, createMerchant, getMerchantInfo} from "../dbTools/merchantTools.js";
+import {getMerchantInfo} from "../dbTools/merchantTools.js";
 import {createNewTransaction} from "../dbTools/createTransaction.js";
 
 dotenv.config()
@@ -23,7 +22,6 @@ Returns {code:x,id:y,expires:z,url:a}
 
 export default server.router.post("/api/createTransaction", async function (req,res) {
     try {
-        const inputData = req.body
        const merchantInfo = await getMerchantInfo(req.body.key)
 
         if (merchantInfo.code === 1) {
