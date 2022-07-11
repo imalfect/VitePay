@@ -38,11 +38,9 @@ export async function sendToDestination(hash,txAmount,tokenId,destination,dbID,d
         'ledger_getBlockByHash',
         `${hash}`
     )
-    const connection = await connPool.getConnection()
     console.log(dbID)
-    const [rows] = await connection.execute(`SELECT * FROM transactions WHERE txID = '${dbID}'`)
+    const [rows] = await connPool.query(`SELECT * FROM transactions WHERE txID = '${dbID}'`)
     console.log(rows)
-    connection.release()
     if (block.amount === txAmount && block.tokenId === tokenId && rows[0].txDestination === destination) {
         // Continue
         try {

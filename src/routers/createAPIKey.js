@@ -2,6 +2,7 @@ import * as server from '../index.js'
 import dotenv from 'dotenv'
 import {doesNameExist,createMerchant} from "../dbTools/merchantTools.js";
 import fetch from 'node-fetch'
+import {app, payLimiter} from "../index.js";
 dotenv.config()
 // Returning {code:x,key:y}:
 /*
@@ -29,7 +30,7 @@ throw 503
 
 
 
-
+app.use('/api/createMerchant', payLimiter)
 export default server.router.post("/api/createMerchant", async function (req,res) {
     try {
 	const captcha = req.body.captchaResponse

@@ -19,11 +19,8 @@ async function sendAccountBlock(accountBlock,privateKey) {
 
 export async function transactionListener() {
     setInterval(async function() {
-        const connection = await connPool.getConnection(() => {
-            console.log('expiration')
-        })
 
-        const [rows] = await connection.execute(`SELECT * FROM transactions`)
+        const [rows] = await connPool.query(`SELECT * FROM transactions`)
 
         console.log(chalk.yellow(`Found ${rows.length} pending transactions!`))
 
@@ -48,9 +45,8 @@ export async function transactionListener() {
 
                     const response = await sendToDestination(transaction.txHash,transaction.txAmount,transaction.txToken,transaction.txDestination,transaction.txID,derived)
                     if (response === 1) {
-                        await connection.execute(`INSERT INTO expiredTransactions (merchantName,txDescription,txToken,txAmount,mmSeed,mmAddress,txMemo,txID,txDestination,txStatus,redirectURL) VALUES ("${transaction.merchantName}","${transaction.txDescription}","${transaction.txToken}","${transaction.txAmount}","${transaction.mmSeed}","${transaction.mmAddress}","${transaction.txMemo}","${transaction.txID}","${transaction.txDestination}","3","${transaction.redirectURL}")`)
-                        await connection.execute(`DELETE FROM transactions WHERE txID = '${transaction.txID}'`)
-                        connection.replace()
+                        await connPool.query(`INSERT INTO expiredTransactions (merchantName,txDescription,txToken,txAmount,mmSeed,mmAddress,txMemo,txID,txDestination,txStatus,redirectURL) VALUES ("${transaction.merchantName}","${transaction.txDescription}","${transaction.txToken}","${transaction.txAmount}","${transaction.mmSeed}","${transaction.mmAddress}","${transaction.txMemo}","${transaction.txID}","${transaction.txDestination}","3","${transaction.redirectURL}")`)
+                        await connPool.query(`DELETE FROM transactions WHERE txID = '${transaction.txID}'`)
                         console.log(`Transaction ${transaction.txID} expired and is now deleted.`)
                     }
                 } else {
@@ -103,7 +99,7 @@ export async function transactionListener() {
                         console.log("wtf somehow it works but how i have no idea lmaoooo")
                         // Update
                         if (transaction.txHash === null) {
-                            await connection.execute(`UPDATE transactions SET txHash = '${deposit.hash}', txDeadline = 'never' WHERE txID = '${transaction.txID}'`)
+                            await connPool.query(`UPDATE transactions SET txHash = '${deposit.hash}', txDeadline = 'never' WHERE txID = '${transaction.txID}'`)
 
                         } else {
                             console.log(depositAmount)
@@ -113,7 +109,6 @@ export async function transactionListener() {
                             console.log(expectedTokenId)
                             console.log(depositTokenId)
                             await revertTransaction(depositHash,depositAmount,depositTokenId,depositSource,derived)
-                            connection.replace()
                             console.log("tx with correct already exists")
                         }
 
@@ -129,7 +124,6 @@ export async function transactionListener() {
                         console.log(expectedTokenId)
                         console.log(depositTokenId)
                         await revertTransaction(depositHash,depositAmount,depositTokenId,depositSource,derived)
-                        connection.replace()
                         // Trigger refund or something idk
                     }
                 }

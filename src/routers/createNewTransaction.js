@@ -2,6 +2,7 @@ import * as server from '../index.js'
 import dotenv from 'dotenv'
 import {getMerchantInfo} from "../dbTools/merchantTools.js";
 import {createNewTransaction} from "../dbTools/createTransaction.js";
+import {app, payLimiter} from "../index.js";
 
 dotenv.config()
 
@@ -19,7 +20,7 @@ Returns {code:x,id:y,expires:z,url:a}
    500 = > SQL Error
 */
 
-
+app.use('/api/createTransaction', payLimiter)
 export default server.router.post("/api/createTransaction", async function (req,res) {
     try {
        const merchantInfo = await getMerchantInfo(req.body.key)

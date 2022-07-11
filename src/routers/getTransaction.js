@@ -17,13 +17,10 @@ export default server.router.post("/api/getTransaction", async function (req,res
 
     try {
         console.log(req.body)
-        const connection = await connPool.getConnection()
-
-        const transaction = await connection.execute(`SELECT * FROM transactions WHERE txID = '${encodeURIComponent(req.body.txID)}'`)
+        const transaction = await connPool.query(`SELECT * FROM transactions WHERE txID = '${encodeURIComponent(req.body.txID)}'`)
 
         if (transaction[0].length > 0) {
             // Transaction still pending
-            connection.release()
             const token = await provider.request(
                 'mintage_getTokenInfoById',
                 transaction[0][0].txToken
@@ -41,7 +38,6 @@ export default server.router.post("/api/getTransaction", async function (req,res
             if (expiredTransaction[0].length > 0) {
 
                 // Transaction expired/completed
-                connection.release()
                 if (parseInt(expiredTransaction[0][0].txStatus) === 3) {
                     res.json({code:1,txCode:parseInt(expiredTransaction[0][0].txStatus),redirectURL:expiredTransaction[0][0].redirectURL})
                 } else {
@@ -52,7 +48,6 @@ export default server.router.post("/api/getTransaction", async function (req,res
 
                 // No ID found
 
-                connection.release()
 
                 res.json({code:2})
             }
