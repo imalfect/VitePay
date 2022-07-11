@@ -23,7 +23,7 @@ export default server.router.post("/api/getTransaction", async function (req,res
 
         if (transaction[0].length > 0) {
             // Transaction still pending
-            connection.destroy()
+            connection.release()
             const token = await provider.request(
                 'mintage_getTokenInfoById',
                 transaction[0][0].txToken
@@ -41,7 +41,7 @@ export default server.router.post("/api/getTransaction", async function (req,res
             if (expiredTransaction[0].length > 0) {
 
                 // Transaction expired/completed
-                connection.destroy()
+                connection.release()
                 if (parseInt(expiredTransaction[0][0].txStatus) === 3) {
                     res.json({code:1,txCode:parseInt(expiredTransaction[0][0].txStatus),redirectURL:expiredTransaction[0][0].redirectURL})
                 } else {
@@ -52,7 +52,7 @@ export default server.router.post("/api/getTransaction", async function (req,res
 
                 // No ID found
 
-                connection.destroy()
+                connection.release()
 
                 res.json({code:2})
             }

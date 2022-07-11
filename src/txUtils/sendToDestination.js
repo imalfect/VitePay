@@ -42,7 +42,7 @@ export async function sendToDestination(hash,txAmount,tokenId,destination,dbID,d
     console.log(dbID)
     const [rows] = await connection.execute(`SELECT * FROM transactions WHERE txID = '${dbID}'`)
     console.log(rows)
-    connection.destroy()
+    connection.release()
     if (block.amount === txAmount && block.tokenId === tokenId && rows[0].txDestination === destination) {
         // Continue
         try {

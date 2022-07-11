@@ -12,7 +12,7 @@ export async function doesNameExist(name) {
 
         const [rows] = await connection.query(`SELECT * FROM merchants WHERE name = '${encodeURIComponent(name)}'`)
 
-        await connection.destroy()
+        await connection.release()
 
         return rows.length > 0;
     } catch (e) {
@@ -45,7 +45,7 @@ export async function createMerchant(name) {
         console.log(shaKey)
         await connection.execute(`INSERT INTO merchants (name, apikey,verified) VALUES ("${name}", "${shaKey}", "false")`)
 
-        connection.destroy()
+        connection.release()
 
         return {code:1,key:apiKey}
 
@@ -77,7 +77,7 @@ try {
     const connection = await connPool.getConnection()
 
     const [rows] = await connection.execute(`SELECT * FROM merchants WHERE apikey = '${await sha256(key)}'`)
-    connection.destroy()
+    connection.release()
 
     if (!(rows.length > 0)) {
         throw {code:8};

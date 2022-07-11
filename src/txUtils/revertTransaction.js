@@ -43,7 +43,6 @@ export async function revertTransaction(hash,txAmount,tokenId,destination,derive
             }, provider, derived.privateKey);
     await sendAccountBlock(accountBlock,derived.privateKey)
 
-
         } catch (e) {
             console.warn(e)
         }

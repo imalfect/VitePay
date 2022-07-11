@@ -43,7 +43,10 @@ async function createMerchant() {
     } else if (response.code === 2) {
         grecaptcha.reset();
         alert("This name is already taken!")
-    } else {
+    } else if (response.code === 3) {
+	grecaptcha.reset();
+alert("Captcha isn't completed!");
+} else {
         grecaptcha.reset();
         alert("Unexpected error happened.")
     }
