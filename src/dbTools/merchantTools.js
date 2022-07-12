@@ -8,11 +8,9 @@ dotenv.config()
 export async function doesNameExist(name) {
     try {
 
-        const connection = await connPool.getConnection()
 
-        const [rows] = await connection.query(`SELECT * FROM merchants WHERE name = '${encodeURIComponent(name)}'`)
+        const [rows] = await connPool.query(`SELECT * FROM merchants WHERE name = ?`, [name])
 
-        await connection.release()
 
         return rows.length > 0;
     } catch (e) {
@@ -42,7 +40,7 @@ export async function createMerchant(name) {
         const apiKey = randomstring.generate(parseInt(process.env.APIKEY_LENGTH))
         const shaKey = await sha256(apiKey)
         console.log(shaKey)
-        await connPool.query(`INSERT INTO merchants (name, apikey,verified) VALUES ("${name}", "${shaKey}", "false")`)
+        await connPool.query(`INSERT INTO merchants (name, apikey,verified) VALUES (?,?,?)`, [name, shaKey, false])
 
 
 
@@ -74,7 +72,7 @@ Returns:
 */
 try {
 
-    const [rows] = await connPool.query(`SELECT * FROM merchants WHERE apikey = '${await sha256(key)}'`)
+    const [rows] = await connPool.query(`SELECT * FROM merchants WHERE apikey = ?`, [await sha256(key)])
 
     if (!(rows.length > 0)) {
         throw {code:8};

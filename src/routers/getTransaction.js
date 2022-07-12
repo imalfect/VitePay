@@ -17,7 +17,7 @@ export default server.router.post("/api/getTransaction", async function (req,res
 
     try {
         console.log(req.body)
-        const transaction = await connPool.query(`SELECT * FROM transactions WHERE txID = '${encodeURIComponent(req.body.txID)}'`)
+        const transaction = await connPool.query(`SELECT * FROM transactions WHERE txID = ?`, [req.body.txID])
 
         if (transaction[0].length > 0) {
             // Transaction still pending
@@ -33,7 +33,7 @@ export default server.router.post("/api/getTransaction", async function (req,res
             }
             res.json({code:1,memo:transaction[0][0].txMemo,mmAddress:transaction[0][0].mmAddress,amount:transaction[0][0].txAmount,tokenId:transaction[0][0].txToken,txCode:1,expirationTime:transaction[0][0].txDeadline,tokenSymbol:token.tokenSymbol,tokenDecimals:token.decimals,description:transaction[0][0].txDescription,merchantVerified:transaction[0][0].merchantVerified,merchantName:transaction[0][0].merchantName,css:transaction[0][0].css})
         } else {
-            const expiredTransaction = await connection.execute(`SELECT * FROM expiredTransactions WHERE txID = '${encodeURIComponent(req.body.txID)}'`)
+            const expiredTransaction = await connPool.query(`SELECT * FROM expiredTransactions WHERE txID = ?`, [req.body.txID])
 
             if (expiredTransaction[0].length > 0) {
 
