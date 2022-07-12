@@ -93,9 +93,8 @@ export async function createNewTransaction(merchantName,description,tokenId,amou
             index:0
         }).address
         // Insert into DB
-
-        await connPool.query(`INSERT INTO transactions (merchantName,txDescription,txToken,txAmount,mmSeed,mmAddress,txMemo,txDeadline,txID,txDestination,merchantVerified,redirectURL,css) VALUES ("${merchantName}", "${encodeURIComponent(description)}", "${tokenId}", "${amount}","${mmMnemonics}","${mmAddress}","${txMemo}", "${expirationTime}", "${txId}", "${txDestination}", "${merchantVerified}","${redirectURL}","${encodeURIComponent(css)}")`)
-        return {code:1,id:txId,expires:expirationTime,url:`${process.env.WEB_URL}/pay/${txId}`}
+        await connPool.query(`INSERT INTO transactions (merchantName,txDescription,txToken,txAmount,mmSeed,mmAddress,txMemo,txDeadline,txID,txDestination,merchantVerified,redirectURL,css) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`,[merchantName,description,tokenId,amount,mmMnemonics,mmAddress,txMemo,expirationTime,txId,txDestination,merchantVerified,redirectURL,css])
+       return {code:1,id:txId,expires:expirationTime,url:`${process.env.WEB_URL}/pay/${txId}`}
     } catch (e) {
         if (e.code === undefined || e.code.errno !== undefined) {
             // sql error
