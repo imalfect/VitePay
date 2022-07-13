@@ -62,6 +62,8 @@ function countdown(unixTimestamp) {
         // If the count down is finished, write some text
         if (distance < 0) {
             clearInterval(x);
+            document.getElementById("timeLeft").innerHTML = '00:00'
+            document.getElementById("timeLeft").style.color = 'red'
             fetchTransaction()
             setTimeout(fetchTransaction(),1000)
         }
