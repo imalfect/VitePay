@@ -88,7 +88,7 @@ export async function transactionListener() {
                     });
 
                     await sendAccountBlock(accountBlock,derived.privateKey).catch((e) => {
-                        console.log("Issues with the block wooooo")
+                        console.log("Issues with the block.")
 
                     })
 
@@ -96,9 +96,10 @@ export async function transactionListener() {
 
                     if (depositAmount === expectedAmount && depositMemo === expectedMemo && expectedTokenId === depositTokenId) {
                         // Nice!
-                        console.log("wtf somehow it works but how i have no idea lmaoooo")
+                        console.log("Nice!")
                         // Update
-                        if (transaction.txHash === null) {
+                        const tX = await connPool.query(`SELECT * FROM transactions WHERE txID = ?`, [transaction.txID])
+                        if (tX[0][0].txHash === null) {
                             await connPool.query(`UPDATE transactions SET txHash = '${deposit.hash}', txDeadline = 'never' WHERE txID = '${transaction.txID}'`)
 
                         } else {
