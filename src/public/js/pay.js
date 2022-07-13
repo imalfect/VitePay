@@ -53,13 +53,16 @@ function countdown(unixTimestamp) {
         // Time calculations for days, hours, minutes and seconds
         let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
+        if (seconds < 10) {
+            seconds = '0' + seconds
+        }
         // Display the result in the element with id="demo"
         document.getElementById("timeLeft").innerHTML = minutes + ":" + seconds;
 
         // If the count down is finished, write some text
         if (distance < 0) {
-            setTimeout(fetchTransaction(),4000)
+            fetchTransaction()
+            setTimeout(fetchTransaction(),1000)
         }
     }, 1000);
 }
