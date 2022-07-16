@@ -98,7 +98,7 @@ export async function createNewTransaction(merchantName,description,tokenId,amou
         }).address
         // Insert into DB
         await connPool.query(`INSERT INTO transactions (merchantName,txDescription,txToken,txAmount,mmSeed,mmAddress,txMemo,txDeadline,txID,txDestination,merchantVerified,redirectURL,css) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`,[merchantName,description,tokenId,amount,mmMnemonics,mmAddress,txMemo,expirationTime,txId,txDestination,merchantVerified,redirectURL,css])
-        throw new functionResponse(200,{code:1,id:txId,expires:expirationTime,url:`${process.env.WEB_URL}/pay/${txId}`})
+        return new functionResponse(200,{code:1,id:txId,expires:expirationTime,url:`${process.env.WEB_URL}/pay/${txId}`})
     } catch (e) {
         if (e.code === undefined || e.code.errno !== undefined) {
             // sql error

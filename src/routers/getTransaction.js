@@ -29,12 +29,12 @@ export default server.router.post("/api/getTransaction", async function (req,res
             console.log(transaction[0][0].txHash)
             if (transaction[0][0].txHash !== null) {
                 const txConfirmations = await getTransactionConfirmations(transaction[0][0].txHash)
-                const functionResponse = new functionResponse(200,{code:1,memo:transaction[0][0].txMemo,mmAddress:transaction[0][0].mmAddress,amount:transaction[0][0].txAmount,tokenId:transaction[0][0].txToken,txCode:1,expirationTime:transaction[0][0].txDeadline,tokenSymbol:token.tokenSymbol,tokenDecimals:token.decimals,confirmations:txConfirmations,description:transaction[0][0].txDescription,merchantVerified:transaction[0][0].merchantVerified,merchantName:transaction[0][0].merchantName,css:transaction[0][0].css})
-                resReply(functionResponse,res)
+                const response = new functionResponse(200,{code:1,memo:transaction[0][0].txMemo,mmAddress:transaction[0][0].mmAddress,amount:transaction[0][0].txAmount,tokenId:transaction[0][0].txToken,txCode:1,expirationTime:transaction[0][0].txDeadline,tokenSymbol:token.tokenSymbol,tokenDecimals:token.decimals,confirmations:txConfirmations,description:transaction[0][0].txDescription,merchantVerified:transaction[0][0].merchantVerified,merchantName:transaction[0][0].merchantName,css:transaction[0][0].css})
+                resReply(response,res)
                 return;
             }
-            const functionResponse = new functionResponse(200,{code:1,memo:transaction[0][0].txMemo,mmAddress:transaction[0][0].mmAddress,amount:transaction[0][0].txAmount,tokenId:transaction[0][0].txToken,txCode:1,expirationTime:transaction[0][0].txDeadline,tokenSymbol:token.tokenSymbol,tokenDecimals:token.decimals,description:transaction[0][0].txDescription,merchantVerified:transaction[0][0].merchantVerified,merchantName:transaction[0][0].merchantName,css:transaction[0][0].css})
-            resReply(functionResponse,res)
+            const response = new functionResponse(200,{code:1,memo:transaction[0][0].txMemo,mmAddress:transaction[0][0].mmAddress,amount:transaction[0][0].txAmount,tokenId:transaction[0][0].txToken,txCode:1,expirationTime:transaction[0][0].txDeadline,tokenSymbol:token.tokenSymbol,tokenDecimals:token.decimals,description:transaction[0][0].txDescription,merchantVerified:transaction[0][0].merchantVerified,merchantName:transaction[0][0].merchantName,css:transaction[0][0].css})
+            resReply(response,res)
         } else {
             const expiredTransaction = await connPool.query(`SELECT * FROM expiredTransactions WHERE txID = ?`, [req.body.txID])
 
@@ -42,29 +42,29 @@ export default server.router.post("/api/getTransaction", async function (req,res
 
                 // Transaction expired/completed
                 if (parseInt(expiredTransaction[0][0].txStatus) === 3) {
-                    const functionResponse = new functionResponse(200,{code:1,txCode:parseInt(expiredTransaction[0][0].txStatus),redirectURL:expiredTransaction[0][0].redirectURL})
-                    resReply(functionResponse,res)
+                    const response = new functionResponse(200,{code:1,txCode:parseInt(expiredTransaction[0][0].txStatus),redirectURL:expiredTransaction[0][0].redirectURL})
+                    resReply(response,res)
                 } else {
-                    const functionResponse = new functionResponse(200,{code:1,txCode:parseInt(expiredTransaction[0][0].txStatus)})
-                    resReply(functionResponse,res)
+                    const response = new functionResponse(200,{code:1,txCode:parseInt(expiredTransaction[0][0].txStatus)})
+                    resReply(response,res)
                 }
 
             } else {
 
                 // No ID found
 
-                const functionResponse = new functionResponse(404,{code:2})
-                resReply(functionResponse,res)
+                const response = new functionResponse(404,{code:2})
+                resReply(response,res)
             }
         }
     } catch (e) {
         if (e.code === undefined || e.code.errno !== undefined) {
             // sql error
-            const functionResponse = new functionResponse(400,{code:500})
-            resReply(functionResponse,res)
+            const response = new functionResponse(400,{code:500})
+            resReply(response,res)
         } else {
-            const functionResponse = new functionResponse(400,{code:e})
-            resReply(functionResponse,res)
+            const response = new functionResponse(400,{code:e})
+            resReply(response,res)
         }
     }
 
