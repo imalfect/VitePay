@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import {doesNameExist,createMerchant} from "../dbTools/merchantTools.js";
 import fetch from 'node-fetch'
 import {app, payLimiter} from "../index.js";
+import {resReply} from "../utils/responseConstructor.js";
 dotenv.config()
 // Returning {code:x,key:y}:
 /*
@@ -43,18 +44,22 @@ export default server.router.post("/api/createMerchant", async function (req,res
 
         if (doesMerchantExist === false) {
             // Continue
-                res.json(await createMerchant(name))
+            const x = await createMerchant(name)
+            resReply(x,res)
         } else {
+
             // Name already exists
-                res.json({code:2,key:undefined})
+            res.status(200)
+            res.json({code:2,key:undefined})
         }
 } else {
-
-res.json({code:3,key:undefined})
-return;
+        res.status(200)
+        res.json({code:3,key:undefined})
+return '';
 }
     } catch (e) {
         console.log(e)
+        res.status(400)
         res.json({code:e,key:undefined})
     }
 

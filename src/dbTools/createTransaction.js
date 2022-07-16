@@ -4,6 +4,8 @@ import * as randomstring from 'randomstring'
 import moment from "moment";
 import aes256 from 'aes256'
 import vite from "@vite/vitejs"
+import {functionResponse} from "../utils/responseConstructor.js";
+
 dotenv.config()
 
 function isValidHttpUrl(string) {
@@ -35,12 +37,13 @@ export async function createNewTransaction(merchantName,description,tokenId,amou
         // Thousands of checks
         // Check memoprefix length
         if (memoprefix.length > 8) {
-            throw {code:2,id:undefined,expires:undefined}
+            throw new functionResponse(400,{code:2,id:undefined,expires:undefined})
         }
         // Check if token is valid
 
         if (!vite.utils.isValidTokenId(tokenId)) {
-            throw {code:3,id:undefined,expires:undefined}
+            throw new functionResponse(400,{code:3,id:undefined,expires:undefined})
+
         }
 
         // Check if the destination address is valid
@@ -48,25 +51,26 @@ export async function createNewTransaction(merchantName,description,tokenId,amou
         const addressValidationInfo = vite.wallet.isValidAddress(txDestination)
 
         if (addressValidationInfo === 0 || addressValidationInfo === 2) {
-            throw {code:4,id:undefined,expires:undefined}
+            throw new functionResponse(400,{code:4,id:undefined,expires:undefined})
         }
 
         // Check if the amount is a number
 
         if (isNaN(amount)) {
-            throw {code:5,id:undefined,expires:undefined}
+            throw new functionResponse(400,{code:5,id:undefined,expires:undefined})
+
         }
 
         // Check description length
 
         if (description.length > 75) {
-            throw {code:6,id:undefined,expires:undefined}
+            throw new functionResponse(400,{code:6,id:undefined,expires:undefined})
         }
 
         // Check if the URL is valid
 
         if (!isValidHttpUrl(redirectURL)) {
-            throw {code:7,id:undefined,expires:undefined}
+            throw new functionResponse(400,{code:7,id:undefined,expires:undefined})
         }
 
 
@@ -94,13 +98,13 @@ export async function createNewTransaction(merchantName,description,tokenId,amou
         }).address
         // Insert into DB
         await connPool.query(`INSERT INTO transactions (merchantName,txDescription,txToken,txAmount,mmSeed,mmAddress,txMemo,txDeadline,txID,txDestination,merchantVerified,redirectURL,css) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`,[merchantName,description,tokenId,amount,mmMnemonics,mmAddress,txMemo,expirationTime,txId,txDestination,merchantVerified,redirectURL,css])
-       return {code:1,id:txId,expires:expirationTime,url:`${process.env.WEB_URL}/pay/${txId}`}
+        throw new functionResponse(200,{code:1,id:txId,expires:expirationTime,url:`${process.env.WEB_URL}/pay/${txId}`})
     } catch (e) {
         if (e.code === undefined || e.code.errno !== undefined) {
             // sql error
-            throw {code:500}
+            throw new functionResponse(400,{code:500,id:undefined,expires:undefined})
         } else {
-            throw e;
+            throw new functionResponse(400,{code:e,id:undefined,expires:undefined});
         }
     }
 

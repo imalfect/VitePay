@@ -2,6 +2,7 @@ import {connPool} from "../index.js";
 import dotenv from 'dotenv'
 import * as randomstring from 'randomstring'
 import {sha256} from "../utils/sha256.js";
+import {functionResponse} from "../utils/responseConstructor.js";
 
 dotenv.config()
 
@@ -43,17 +44,16 @@ export async function createMerchant(name) {
         await connPool.query(`INSERT INTO merchants (name, apikey,verified) VALUES (?,?,?)`, [name, shaKey, false])
 
 
-
-        return {code:1,key:apiKey}
+        return new functionResponse(200, {code: 1, key: apiKey});
 
 
     } catch (e) {
         console.log(e)
         if (e.code.errno !== undefined) {
             // sql error
-            throw {code:500}
+            throw new functionResponse(400, {code: 500});
         } else {
-            throw e;
+            throw new functionResponse(400, {code: e});
         }
     }
 

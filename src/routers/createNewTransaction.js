@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import {getMerchantInfo} from "../dbTools/merchantTools.js";
 import {createNewTransaction} from "../dbTools/createTransaction.js";
 import {app, payLimiter} from "../index.js";
+import {functionResponse, resReply} from "../utils/responseConstructor.js";
 
 dotenv.config()
 
@@ -28,13 +29,14 @@ export default server.router.post("/api/createTransaction", async function (req,
         if (merchantInfo.code === 1) {
             // Continue
             const x = await createNewTransaction(merchantInfo.name,req.body.description,req.body.tokenid,req.body.amount,req.body.memoprefix,req.body.destination,merchantInfo.verified,req.body.redirecturl,merchantInfo.css)
-            res.json(x)
+            resReply(x,res)
         } else if (merchantInfo.code === 2) {
             // Merchant doesn't exist
-            res.json({code:8,key:undefined})
+            const issue = new functionResponse(401,{code:8,id:undefined,expires:undefined,url:undefined})
+            resReply(issue,res)
         }
     } catch (e) {
-        res.json(e)
+        resReply(e,res)
     }
 
 })
