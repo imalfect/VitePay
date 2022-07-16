@@ -102,9 +102,9 @@ export async function createNewTransaction(merchantName,description,tokenId,amou
     } catch (e) {
         if (e.code === undefined || e.code.errno !== undefined) {
             // sql error
-            throw new functionResponse(400,{code:500,id:undefined,expires:undefined})
+            throw new functionResponse(500,{code:500,id:undefined,expires:undefined})
         } else {
-            throw new functionResponse(400,{code:e,id:undefined,expires:undefined});
+            throw new functionResponse(500,{code:e,id:undefined,expires:undefined});
         }
     }
 

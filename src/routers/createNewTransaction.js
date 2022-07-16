@@ -32,7 +32,7 @@ export default server.router.post("/api/createTransaction", async function (req,
             resReply(x,res)
         } else if (merchantInfo.code === 2) {
             // Merchant doesn't exist
-            const issue = new functionResponse(401,{code:8,id:undefined,expires:undefined,url:undefined})
+            const issue = new functionResponse(400,{code:8,id:undefined,expires:undefined,url:undefined})
             resReply(issue,res)
         }
     } catch (e) {

@@ -51,9 +51,9 @@ export async function createMerchant(name) {
         console.log(e)
         if (e.code.errno !== undefined) {
             // sql error
-            throw new functionResponse(400, {code: 500});
+            throw new functionResponse(500, {code: 500});
         } else {
-            throw new functionResponse(400, {code: e});
+            throw new functionResponse(500, {code: e});
         }
     }
 
