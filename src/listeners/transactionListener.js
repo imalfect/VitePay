@@ -5,7 +5,7 @@ import aes256 from 'aes256'
 import {decodeB64,} from "../utils/base64.js";
 import {revertTransaction} from "../txUtils/revertTransaction.js";
 import {sendToDestination} from "../txUtils/sendToDestination.js";
-import chalk from 'chalk'
+import chalk from 'chalk';
 dotenv.config()
 
 

@@ -132,8 +132,8 @@ async function fetchTransaction() {
                 mSize:0.20 ,
             };
             let qrCodeImageUrl = null;
-
-            qrCode.generate(`vite:${transaction.mmAddress}?amount=${transaction.amount / Math.pow(10,transaction.tokenDecimals)}&data=${window.btoa(transaction.memo).replaceAll('=','')}&tti=${transaction.tokenId}`, qrCodeSetting)
+            const visibleAmount = new BigNumber(transaction.amount).shiftedBy(-transaction.tokenDecimals).toFixed()
+            qrCode.generate(`vite:${transaction.mmAddress}?amount=${visibleAmount}&data=${window.btoa(transaction.memo).replaceAll('=','')}&tti=${transaction.tokenId}`, qrCodeSetting)
                 .then(() => {
                     qrCodeImageUrl = qrCode.getImage();
                     document.getElementById('payQR').src = qrCode.getImage()
@@ -153,7 +153,7 @@ async function fetchTransaction() {
             const txtoken = document.getElementById('txToken')
             const description = document.getElementById('txDescription')
             memo.value = transaction.memo
-            amount.value = transaction.amount / Math.pow(10,transaction.tokenDecimals)
+            amount.value = visibleAmount
             address.value = transaction.mmAddress
             merchantName.innerHTML = decodeURIComponent(transaction.merchantName)
             txid.innerHTML = transactionID
