@@ -1,7 +1,7 @@
 import {connPool} from "../index.js";
 
 import * as server from '../index.js'
-import {provider} from "../../vitelab.js";
+import {provider} from "../index.js";
 import {getTransactionConfirmations} from "../txUtils/getHashConfirmations.js";
 // Returning {code:x,memo:y,mmAddress:z,amount:a,tokenId:b,txCode:c,expirationTime:d}:
 /*
