@@ -161,7 +161,7 @@ async function fetchTransaction() {
             description.innerHTML = decodeURIComponent(transaction.description)
 
             if (transaction.css !== null) {
-                merchantName.style = decodeURIComponent(transaction.css)
+                merchantName.style = transaction.css
             }
             if (transaction.merchantVerified === 'true') {
                 verifiedMark.style.display = 'inline'
