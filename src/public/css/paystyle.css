@@ -15,10 +15,6 @@
 }
 .txWindow {
     aspect-ratio: initial;
-    max-width: 90vh;
-    max-height: 75vh;
-    width:60rem;
-    height:45rem;
     background-color: #ffffff;
     position: absolute;
     border-radius: 10px;
