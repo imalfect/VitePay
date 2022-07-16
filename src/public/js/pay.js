@@ -91,7 +91,7 @@ async function fetchTransaction() {
             if (transaction.expirationTime === 'never') {
                 // Never
                 clearInterval(x)
-                document.getElementById("timeLeftParent").innerHTML = 'Waiting for confirmations..'
+                document.getElementById("timeLeftParent").innerHTML = 'Waiting for confirmations...'
             }
             if (started === false) {
                 countdown(parseInt(transaction.expirationTime))
