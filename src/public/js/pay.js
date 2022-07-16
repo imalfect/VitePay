@@ -59,7 +59,7 @@ function countdown(unixTimestamp) {
         // Display the result in the element with id="demo"
         document.getElementById("timeLeft").innerHTML = minutes + ":" + seconds;
 
-        // If the count down is finished, write some text
+        // If the countdown is finished, write some text
         if (distance < 0) {
             clearInterval(x);
             document.getElementById("timeLeft").innerHTML = '00:00'
