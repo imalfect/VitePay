@@ -37,7 +37,7 @@
     "i": "^0.3.7",
     "moment": "^2.29.4",
     "mysql2": "^2.3.3",
-    "node-fetch": "^3.2.6",
+    "node-fetch": "^3.2.10",
     "npm": "^8.12.1",
     "qrcode.es": "^1.0.0",
     "randomstring": "^1.2.2"
